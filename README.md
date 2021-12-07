@@ -1,1 +1,1 @@
-# bbichul-spring-backend
+# bbichul-spring-frontend
