@@ -50,7 +50,7 @@ function post_goal_modal() {
     if (days >= 0) {
             $.ajax({
                 type: "PUT",
-                url: "https://api.bbichul.site/goal",
+                url: "https://api.bbichul.site/users/goal",
                 data: JSON.stringify(json),
                 contentType: "application/json",
                 success: function (response) {
@@ -66,7 +66,7 @@ function post_goal_modal() {
 function get_goal_modal() {
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/goal",
+        url: "https://api.bbichul.site/users/goal",
         contentType: "application/json",
         data: {
         },
@@ -100,7 +100,7 @@ function post_resolution_modal() {
     let json = {"content": content};
     $.ajax({
         type: "PUT",
-        url: "https://api.bbichul.site/resolution",
+        url: "https://api.bbichul.site/users/resolution",
         data: JSON.stringify(json),
         contentType: "application/json",
         success: function (response) {
@@ -113,7 +113,7 @@ function post_resolution_modal() {
 function get_resolution_modal() {
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/resolution",
+        url: "https://api.bbichul.site/users/resolution",
         data: {},
         contentType: "application/json",
         success: function (response) {
@@ -300,19 +300,16 @@ function my_info() {
 
 
 function post_study_time_graph() {
-    let json = {
-        "year": $("select[name=year]").val(),
-        "month": $("select[name=month]").val()
-    };
+        let year = $("select[name=year]").val()
+        let month = $("select[name=month]").val()
 
     $.ajax({
-        type: "POST",
-        url: "https://api.bbichul.site/line-graph",
+        type: "GET",
+        url: `https://api.bbichul.site/users/graph?type=line&year=${year}&month=${month}`,
         contentType: "application/json",
-        data: JSON.stringify(json),
         success: function (response) {
-            let day_list = response['day_list']
-            let day_time_list = response['day_time_list']
+            let day_list = response['dayList']
+            let day_time_list = response['dayTimeList']
 
             let study_time_graph = document.getElementById('study_time_graph').getContext('2d');
             let barChart = new Chart(study_time_graph, {
@@ -356,15 +353,12 @@ function post_study_time_graph() {
 }
 
 function post_weekly_avg_graph() {
-    let json = {
-        "year": $("select[name=year]").val(),
-        "month": $("select[name=month]").val()
-    };
+        let year = $("select[name=year]").val()
+        let month = $("select[name=month]").val()
     $.ajax({
-        type: "POST",
-        url: "https://api.bbichul.site/bar-graph",
+        type: "GET",
+        url: `https://api.bbichul.site/users/graph?type=bar&year=${year}&month=${month}`,
         contentType: "application/json",
-        data: JSON.stringify(json),
         success: function (response) {
             let monday = response['monday']
             let tuesday = response['tuesday']
