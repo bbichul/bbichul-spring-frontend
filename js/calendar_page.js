@@ -4,7 +4,7 @@ let btn_year_month_day = ''; //텍스트 박스와 캘린더 연동 위한 달�
 
 let nick_name;
 let team_name;
-let selected_cal_now;
+let selected_calendar_id;
 let rCheck;
 
 
@@ -101,19 +101,19 @@ const goToday = () => {
     renderCalendar();
 }
 
-function checkingOnce() {
+function checkingOnce(id) {
     rCheck = sessionStorage.getItem("rCheck");
     nick_name = sessionStorage.getItem("username");
 
     if (rCheck == null){
-        selected_cal_now = "P1";
-        sessionStorage.setItem("selected_cal_now", selected_cal_now);
+        selected_calendar_id = id;
+        sessionStorage.setItem("selected_calendar_id", selected_calendar_id);
         rCheck = sessionStorage.setItem("rCheck", true);
         date = new Date();
         sessionStorage.setItem("date", date)
 
     }else if (rCheck) {
-        selected_cal_now = sessionStorage.getItem("selected_cal_now");
+        selected_calendar_id = sessionStorage.getItem("selected_calendar_id");
         date = new Date(sessionStorage.getItem("date"));
     }
 }
@@ -122,57 +122,51 @@ function checkingOnce() {
 //캘린더 페이지 접속 시 가져오는 정보
 function getInfo() {
 
-    checkingOnce()
-
 
     $.ajax({
         type: "GET",
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: "https://api.bbichul.site/calendars/info",
+        url: "https://api.bbichul.site/calendars",
         contentType: "application/json",
         async: false, //전역변수에 값을 저장하기 위해 동기 방식으로 전환,
         data: {},
         success: function (response) {
-            let team_calendar_count;
-            let user_calendar_count;
+
+            checkingOnce(response[0].id)
+            
+            let team_calendar_count = 0;
+            let user_calendar_count = 0;
+            let calendar_id;
             for (let i = 0; i < response.length; i++) {
                 if (response[i].team != null) {
+                    team_calendar_count++;
                     team_name = response[i].team.teamname;
-                    team_calendar_count = response[i].teamCount;
-                }
+                    calendar_id = response[i].id;
 
-                if (response[i].userCount > 0) {
-                    user_calendar_count = response[i].userCount;
-                }
-
-            }
-
-
-            if (selected_cal_now.substr(0,1) =="T") {
-                $("#dropdownMenuLink").text(team_name + " 캘린더 " + selected_cal_now.substr(1,2));
-
-            } else if(selected_cal_now.substr(0,1) =="P"){
-                $("#dropdownMenuLink").text(nick_name + " 캘린더 " + selected_cal_now.substr(1,2));
-            }
-
-            for (let i = 0; i < response.length; i++) {
-                let calendar_value = response[i].calendarType;
-                let count = response[i].calendarType.substr(1,2);
-                let calendar_type = response[i].calendarType.substr(0,1);
-
-                if (calendar_type =="P") {
                     let temp_html = `<li>
-                        <button onclick="setCalender(this)" class="dropdown-item" value="${calendar_value}">${nick_name}의 캘린더 ${count}</button>
-                    </li>`
-                    $('#private-selected').append(temp_html);
-                }else if (calendar_type == "T") {
-                    let temp_html = `<li>
-                        <button onclick="setCalender(this)" class="dropdown-item" value="${calendar_value}">${team_name}의 캘린더 ${count}</button>
+                        <button onclick="setCalender(this)" class="dropdown-item" id="${calendar_id}" value="T${team_calendar_count}">${team_name}의 캘린더 ${team_calendar_count}</button>
                     </li>`
                     $('#team-selected').append(temp_html);
+                }else if(response[i].isPrivate){
+                    user_calendar_count++;
+                    calendar_id = response[i].id;
+
+                    let temp_html = `<li>
+                        <button onclick="setCalender(this)" class="dropdown-item" id="${calendar_id}" value="P${user_calendar_count}">${nick_name}의 캘린더 ${user_calendar_count}</button>
+                    </li>`
+                    $('#private-selected').append(temp_html);
                 }
+            }
+
+            
+            let calender_info = $("#"+selected_calendar_id).val();
+            if (calender_info.substr(0,1) =="T") {
+                $("#dropdownMenuLink").text(team_name + " 의 캘린더 " + calender_info.substr(1,2));
+
+            } else if(calender_info.substr(0,1) =="P"){
+                $("#dropdownMenuLink").text(nick_name + " 의 캘린더 " + calender_info.substr(1,2));
             }
         }
     })
@@ -183,9 +177,9 @@ function updateText() {
     let varMemoText = $('#calenderNote').val();
 
     let doc = {
+        "calendarId" : selected_calendar_id,
         "contents" : varMemoText,
-        "dateData" : btn_year_month_day,
-        "calendarType" : selected_cal_now
+        "dateData" : btn_year_month_day
     }
 
     $.ajax({
@@ -193,7 +187,7 @@ function updateText() {
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: "https://api.bbichul.site/calendars/memo",
+        url: "https://api.bbichul.site/calendars/calendar/memo",
         contentType: "application/json",
         data: JSON.stringify(doc),
         success: function (response) {
@@ -207,16 +201,16 @@ function updateText() {
 
 
 function clickedDayGetMemo(obj) {
-    btn_year_month_day = $(obj).attr('id'); // 달력 날짜를 클릭 했을 때 받아온 날짜 ID 를 변수에 초기화.
-    let memo_text_day = btn_year_month_day.replace("Y", "년 ").replace("M", "월 ") + "일";
-    $('.select-date').text(memo_text_day);
+    let btn_year_month_day = $(obj).attr('id'); // 달력 날짜를 클릭 했을 때 받아온 날짜 ID 를 변수에 초기화.
+    let set_memo_date = btn_year_month_day.replace("Y", "년 ").replace("M", "월 ") + "일";
+    $('.select-date').text(set_memo_date);
 
     $.ajax({
         type: "GET",
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: `https://api.bbichul.site/calendars/memo?dateData=${btn_year_month_day}&calendarType=${selected_cal_now}`,
+        url: `https://api.bbichul.site/calendars/calendar/memo?id=${selected_calendar_id}&dateData=${btn_year_month_day}`,
         // data: {date_give: btn_year_month_day, select_cal_give: selected_cal_now},
         success: function (response) {
             console.log(response);
@@ -239,7 +233,7 @@ function addCalender() {
     }
 
     let doc = {
-        "isPrivated" : is_private
+        "isPrivate" : is_private
     }
 
 
@@ -248,7 +242,7 @@ function addCalender() {
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: "https://api.bbichul.site/calendars/option",
+        url: "https://api.bbichul.site/calendars/calendar",
         contentType: "application/json",
         data: JSON.stringify(doc),
         success: function (response) {
@@ -260,17 +254,19 @@ function addCalender() {
 
 //선택한 캘린더로 세팅합니다.
 function setCalender(obj) {
-    let select_calender_id = $(obj).attr('value');
+    let selected_check = $(obj).attr("id");
 
-    if (selected_cal_now == select_calender_id) {
+    if (select_calender_id == selected_check) {
         alert("현재 선택 된 캘린더입니다.")
     } else {
 
-        selected_cal_now= select_calender_id;
-        sessionStorage.setItem("selected_cal_now", selected_cal_now)
+        select_calender_id = selected_check;
+        sessionStorage.setItem("selected_calender_id", select_calender_id)
 
-        let private_or_team = selected_cal_now.substr(0, 1);
-        let calender_num = selected_cal_now.substr(1, 1);
+        let calender_info = $(obj).attr('value');
+
+        let private_or_team = calender_info.substr(0, 1);
+        let calender_num = calender_info.substr(1, 1);
 
         if (private_or_team == 'T') {
             $('#dropdownMenuLink').text(team_name + " 캘린더 " + calender_num);
@@ -298,7 +294,7 @@ function getMemo() {
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: `https://api.bbichul.site/calendars/option?calendarType=${selected_cal_now}`,
+        url: `https://api.bbichul.site/calendars/calendar?id=${selected_calendar_id}`,
         // data: {calendarType: selected_cal_now},
         success: function (response) {
             console.log(response)
