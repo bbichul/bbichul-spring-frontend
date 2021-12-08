@@ -249,7 +249,7 @@ $(".password_eye").on("mousedown", function(){
 //     })
 // }
 
-//회원 탈퇴
+//회원 탈퇴 기능
 function withdrawal() {
 
     let start = {"status": true}
