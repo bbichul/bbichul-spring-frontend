@@ -101,7 +101,7 @@ function getInfo() {
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: "https://api.bbichul.site/api/calendars",
+        url: "https://api.bbichul.site/api/calendars/info",
         contentType: "application/json",
         async: false, //전역변수에 값을 저장하기 위해 동기 방식으로 전환,
         data: {},
