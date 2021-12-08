@@ -210,7 +210,7 @@ function clickedDayGetMemo(obj) {
         // headers: {
         //     Authorization: getCookie('access_token')
         // },
-        url: `https://api.bbichul.site/calendars/calendar/memo?id=${selected_calendar_id}&dateData=${btn_year_month_day}`,
+        url: `https://api.bbichul.site/calendars/calendar/memo?id=${selected_calendar_id}&date=${btn_year_month_day}`,
         // data: {date_give: btn_year_month_day, select_cal_give: selected_cal_now},
         success: function (response) {
             console.log(response);
