@@ -245,13 +245,12 @@ function withdrawal() {
 
     $.ajax({
         type: "POST",
-        url: "https://api.bbichul.site/status",
+        url: "https://api.bbichul.site/users/withdrawal",
         contentType: 'application/json',
         data: JSON.stringify(start),
 
         success: function (response) {
-            localStorage.removeItem('token');
-            localStorage.removeItem('username');
+            sessionStorage.clear()
             location.href ="index.html";
             alert("회원탈퇴가 완료되었습니다")
 
