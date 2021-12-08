@@ -50,7 +50,7 @@ function post_goal_modal() {
     if (days >= 0) {
             $.ajax({
                 type: "PUT",
-                url: "/goal",
+                url: "https://api.bbichul.site/goal",
                 data: JSON.stringify(json),
                 contentType: "application/json",
                 success: function (response) {
@@ -66,7 +66,7 @@ function post_goal_modal() {
 function get_goal_modal() {
     $.ajax({
         type: "GET",
-        url: "/goal",
+        url: "https://api.bbichul.site/goal",
         contentType: "application/json",
         data: {
         },
@@ -100,7 +100,7 @@ function post_resolution_modal() {
     let json = {"content": content};
     $.ajax({
         type: "PUT",
-        url: "/resolution",
+        url: "https://api.bbichul.site/resolution",
         data: JSON.stringify(json),
         contentType: "application/json",
         success: function (response) {
@@ -113,7 +113,7 @@ function post_resolution_modal() {
 function get_resolution_modal() {
     $.ajax({
         type: "GET",
-        url: "/resolution",
+        url: "https://api.bbichul.site/resolution",
         data: {},
         contentType: "application/json",
         success: function (response) {
@@ -129,7 +129,7 @@ function post_nickname_modal() {
 
     $.ajax({
         type: "POST",
-        url: "/nickname-modal",
+        url: "https://api.bbichul.site/nickname-modal",
         contentType: "application/json",
         data: JSON.stringify(json),
         success: function (response) {
@@ -147,7 +147,7 @@ function post_nickname_modal() {
 function get_nickname_modal() {
     $.ajax({
         type: "GET",
-        url: "/nickname-modal",
+        url: "https://api.bbichul.site/nickname-modal",
         contentType: "application/json",
         data: {},
         success: function (response) {
@@ -160,7 +160,7 @@ function get_nickname_modal() {
 function get_user_team() {
     $.ajax({
         type: "GET",
-        url: "/user-team",
+        url: "https://api.bbichul.site/user-team",
         headers: {
             Authorization:  getCookie('access_token')
         },
@@ -191,7 +191,7 @@ function post_check_password() {
     let password = $('#now-password').val()
     $.ajax({
         type: "POST",
-        url: "/check-password",
+        url: "https://api.bbichul.site/check-password",
         headers: {
             Authorization:  getCookie('access_token')
         },
@@ -215,7 +215,7 @@ function post_new_password() {
     let password = $('#new-password').val()
     $.ajax({
         type: "POST",
-        url: "/new-password",
+        url: "https://api.bbichul.site/new-password",
         headers: {
             Authorization:  getCookie('access_token')
         },
@@ -245,14 +245,14 @@ function withdrawal() {
 
     $.ajax({
         type: "POST",
-        url: "/status",
+        url: "https://api.bbichul.site/status",
         contentType: 'application/json',
         data: JSON.stringify(start),
 
         success: function (response) {
             localStorage.removeItem('token');
             localStorage.removeItem('username');
-            location.href ="/";
+            location.href ="index.html";
             alert("회원탈퇴가 완료되었습니다")
 
         }
@@ -278,7 +278,7 @@ function my_info() {
     let goal_hour = $("select[name=year]").val()
     $.ajax({
         type: "GET",
-        url: "/my-info",
+        url: "https://api.bbichul.site/my-info",
         headers: {
             Authorization:  getCookie('access_token')
         },
@@ -307,7 +307,7 @@ function post_study_time_graph() {
 
     $.ajax({
         type: "POST",
-        url: "/line-graph",
+        url: "https://api.bbichul.site/line-graph",
         contentType: "application/json",
         data: JSON.stringify(json),
         success: function (response) {
@@ -362,7 +362,7 @@ function post_weekly_avg_graph() {
     };
     $.ajax({
         type: "POST",
-        url: "/bar-graph",
+        url: "https://api.bbichul.site/bar-graph",
         contentType: "application/json",
         data: JSON.stringify(json),
         success: function (response) {
