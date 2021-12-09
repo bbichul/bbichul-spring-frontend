@@ -28,9 +28,8 @@ $(document).ready(function () {
 function get_progressbar() {
     $.ajax({
         type: "POST",
-        url: "https://api.bbichul.site/teams/task/graph",
+        url: "https://api.bbichul.site/api/teams/task/graph",
         success: function (response) {
-            console.log(response)
             let percent = response['percent']
             let done_count = response['doneCount']
 
@@ -49,14 +48,13 @@ function get_progressbar() {
 function teamCheck() {
     $.ajax({
         type: "GET",
-        url: `https://api.bbichul.site/teams`,
+        url: `https://api.bbichul.site/api/teams`,
         success: function (response) {
             if (response == "아직 소속된 팀이 없습니다.") {
                 $('.team-exist').hide()
                 let temp_html = `<h1>아직 소속된 팀이 없습니다.</h1>`
                 $('#team-alert').append(temp_html)
             } else {
-                console.log(response)
                 $('.not-exist').hide()
                 let team = `${response}`
                 $('#team').css('color', `whitesmoke`);
@@ -79,13 +77,13 @@ function hide_teamname() {
 function createTeam() {
     team = $('#team-name').val()
     let teamname = {teamname : team}
-        // hidden input의 value로 중복확인 버튼을 눌렀는지 안눌렀는지 확인
+    // hidden input의 value로 중복확인 버튼을 눌렀는지 안눌렀는지 확인
     if ($("input[name=checked-team]").val() != 'y') {
         alert("중복확인을 통과한 경우만 만들 수 있습니다.")
     } else {
         $.ajax({
             type: "POST",
-            url: "https://api.bbichul.site/teams",
+            url: "https://api.bbichul.site/api/teams",
             contentType: "application/json",
             data: JSON.stringify(teamname),
             success: function (response) {
@@ -117,7 +115,7 @@ function invite_team() {
     } else {
         $.ajax({
             type: "POST",
-            url: "https://api.bbichul.site/teams/signup",
+            url: "https://api.bbichul.site/api/teams/signup",
             contentType: "application/json",
             data: JSON.stringify(teamname),
             success: function (response) {
@@ -149,7 +147,7 @@ function teamname_check() {
     } else {
         $.ajax({
             type: "POST",
-            url: "https://api.bbichul.site/teams/checkname",
+            url: "https://api.bbichul.site/api/teams/checkname",
             contentType: "application/json",
             data: JSON.stringify(name),
             success: function (response) {
@@ -180,7 +178,7 @@ $('#create-team-close').on('click',function() {
 function showtask() {
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/teams/task",
+        url: "https://api.bbichul.site/api/teams/task",
         success: function (response) {
             get_progressbar()
             for (let i = 0; i < response.length; i++) {
@@ -208,24 +206,24 @@ function makeListTask(task, done, id) {
 // 내가 속한 팀 찾아 할일 저장하기
 $(document).ready(function () {
     $('#taskinput').keydown(function (key) {
-       if (key.keyCode == 13) {
-           let task = $(".txt").val();
-           let teamtask = {task : task}
-           $.ajax({
-               type: "POST",
-               url: "https://api.bbichul.site/teams/task",
-               contentType: "application/json",
-               data: JSON.stringify(teamtask),
-               success: function (response) {
-                   let task = response['task']
-                   let id = response['id']
-                   let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i></div>`
-                   $(".notdone").append(temphtml);
-               }
-           });
-           //입력 창 비우기
-           $(".txt").val("");
-       }
+        if (key.keyCode == 13) {
+            let task = $(".txt").val();
+            let teamtask = {task : task}
+            $.ajax({
+                type: "POST",
+                url: "https://api.bbichul.site/api/teams/task",
+                contentType: "application/json",
+                data: JSON.stringify(teamtask),
+                success: function (response) {
+                    let task = response['task']
+                    let id = response['id']
+                    let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i></div>`
+                    $(".notdone").append(temphtml);
+                }
+            });
+            //입력 창 비우기
+            $(".txt").val("");
+        }
     })
 })
 
@@ -235,7 +233,7 @@ function deletetask(id) {
     let taskId = {id:id}
     $.ajax({
         type: "DELETE",
-        url: `https://api.bbichul.site/teams/task`,
+        url: `https://api.bbichul.site/api/teams/task`,
         contentType: "application/json",
         data: JSON.stringify(taskId),
         success: function () {
@@ -249,7 +247,7 @@ function changedone(id) {
     let taskId = {id:id}
     $.ajax({
         type: "PUT",
-        url: `https://api.bbichul.site/teams/task`,
+        url: `https://api.bbichul.site/api/teams/task`,
         contentType: "application/json",
         data: JSON.stringify(taskId),
         success: function () {
@@ -263,7 +261,7 @@ function checkstatus() {
     let status = "check-in"
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/teams/status",
+        url: "https://api.bbichul.site/api/teams/status",
         success: function (response) {
             for (let i = 0; i < response.length; i++) {
                 let nick_name = response[i]['username']
@@ -279,4 +277,3 @@ function checkstatus() {
         }
     });
 }
-

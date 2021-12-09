@@ -62,7 +62,7 @@ function sign_up() {
 
     $.ajax({
         type: 'POST',
-        url: `https://api.bbichul.site/signup`,
+        url: `https://api.bbichul.site/api/users/signup`,
         contentType: "application/json",
         data: JSON.stringify(info),
         success: function (response) {
@@ -91,7 +91,7 @@ function login() {
     }
     $.ajax({
         type: 'POST',
-        url: `https://api.bbichul.site/login`,
+        url: `https://api.bbichul.site/api/users/login`,
         contentType: "application/json",
         data: JSON.stringify(info),
         success: function (response) {
@@ -109,8 +109,6 @@ function login() {
 
 //로그아웃
 function log_out() {
-    // sessionStorage.removeItem('token');
-    // sessionStorage.removeItem('username');
     sessionStorage.clear()
     alert('로그아웃 되었습니다')
     location.href ="index.html";
@@ -133,7 +131,7 @@ function nickname_check() {
     }
     $.ajax({
         type: "POST",
-        url: "https://api.bbichul.site/check",
+        url: "https://api.bbichul.site/api/users/check",
         contentType: 'application/json',
         data: JSON.stringify(nick_name),
         success: function (response) {
