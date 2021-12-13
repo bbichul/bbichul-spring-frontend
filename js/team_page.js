@@ -263,6 +263,7 @@ function checkstatus() {
         type: "GET",
         url: "https://api.bbichul.site/api/teams/status",
         success: function (response) {
+            console.log(response)
             for (let i = 0; i < response.length; i++) {
                 let nick_name = response[i]['username']
                 if (response[i]['studying'] == false) {
