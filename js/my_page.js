@@ -329,7 +329,7 @@ function post_study_time_graph() {
                 data: {
                     labels: day_list,
                     datasets: [{
-                        label: "초",
+                        label: "분",
                         data: day_time_list,
                         backgroundColor: 'skyblue',
                     }]
@@ -339,8 +339,8 @@ function post_study_time_graph() {
                     title: {
                         display: true,
                         text: '월별 공부시간',
-                        fontSize: 30,
-                        fontColor: 'green'
+                        fontSize: 20,
+                        fontColor: 'gray'
                     },
                     legend: {
                         display: false,
@@ -350,10 +350,10 @@ function post_study_time_graph() {
                         yAxes: [{
                             ticks: {
                                 callback: function(label, index, labels) {
-                                    return parseInt(label/3600) +'h';
+                                    return parseInt(label/60) +'h';
                                 },
                                 beginAtZero: true,
-                                stepSize: 3600,
+                                stepSize: 60,
                             }
                         }]
                     }
@@ -388,7 +388,7 @@ function post_weekly_avg_graph() {
                 data: {
                     labels: ['월', '화', '수', '목', '금', '토', '일'],
                     datasets: [{
-                        label: "요일별 평균 공부시간",
+                        label: "분",
                         data: [monday, tuesday, wednesday, thursday, friday, saturday, sunday],
                         backgroundColor: '#3E83FE',
                     }]
@@ -396,16 +396,23 @@ function post_weekly_avg_graph() {
                 options: {
                     maintainAspectRatio: false,
                     legend: {
+                        display: false,
                         align: top
+                    },
+                    title: {
+                        display: true,
+                        text: '요일별 공부시간',
+                        fontSize: 20,
+                        fontColor: 'gray'
                     },
                     scales: {
                         yAxes: [{
                             ticks: {
                                 callback: function(label, index, labels) {
-                                    return parseInt(label/3600) +'h';
+                                    return parseInt(label/60) +'h';
                                 },
                                 beginAtZero: true,
-                                stepSize: 3600,
+                                stepSize: 60,
                             }
                         }]
                     }
