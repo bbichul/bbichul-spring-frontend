@@ -1,3 +1,12 @@
+//진입전 로그인 확인
+window.onload = function () {
+    if (localStorage.getItem("token") == null) {
+        alert('로그인 해주세요')
+        location.href = "index.html";
+    }
+}
+
+
 //달력에 필요한 변수들 선언, 초기화
 let date;
 let btn_year_month_day = ''; //텍스트 박스와 캘린더 연동 위한 달력 버튼 ID 값 저장

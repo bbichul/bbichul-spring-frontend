@@ -1,3 +1,11 @@
+//진입전 로그인 확인
+window.onload = function () {
+    if (localStorage.getItem("token") == null) {
+        alert('로그인 해주세요')
+        location.href = "index.html";
+    }
+}
+
 // ajax 시 헤더 부분에 토큰 넣어주고 코드를 줄일 수 있다
 $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
     if(localStorage.getItem('token')) {

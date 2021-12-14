@@ -1,3 +1,11 @@
+//진입전 로그인 확인
+window.onload = function () {
+    if (localStorage.getItem("token") == null) {
+        alert('로그인 해주세요')
+        location.href = "index.html";
+    }
+}
+
 //처음들어왔을때 select-box가 현재 년,월로 찍히게 하기
 $("#year").val(2021);
 $("#month").val(12);
