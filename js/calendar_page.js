@@ -1,5 +1,5 @@
 //진입전 로그인 확인
-window.onload = function () {
+window.onpageshow = function (event) {
     if (sessionStorage.getItem("token") == null) {
         alert('로그인 해주세요')
         location.href = "index.html";
