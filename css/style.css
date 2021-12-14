@@ -811,3 +811,16 @@ section {
   font-size: 22px;
   cursor: pointer;
 }
+.btn{
+  background-color: #0f5132;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1;
+
+}
+.btn1{
+  background-color: #2c3034;
+  font-size: 14px;
+  font-weight: 500;
+  z-index: 1;
+}

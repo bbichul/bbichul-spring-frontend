@@ -19,6 +19,9 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
+          integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
+
 
     <!-- Vendor CSS Files -->
     <link href="./vendor/animate.css/animate.min.css" rel="stylesheet">
@@ -243,68 +246,81 @@
      aria-labelledby="logInModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="loginModalLabel">로그인</h5>
-                <button id="login_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+        <div class="modal-content p-sm-4 p-3 position-relative">
+            <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close">
+                <i class="fas fa-times-circle fa-lg"></i>
+            </button>
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-center w-100">로그인</h5>
             </div>
             <div class="modal-body">
-                <div class="input-box">
-                    <label>닉네임</label>
-                    <input type="text" id="login_nickname">
+
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text rounded-0 border-0">닉네임</div>
+                    </div>
+                    <input type="text" id="login_nickname" class="form-control rounded-0" placeholder="닉네임을 입력해 주세요">
                 </div>
-                <div class="input-box">
-                    <label>비밀번호</label>
-                    <input type="password" id="login_password" placeholder="비밀번호를 입력해주세요.">
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text rounded-0 border-0">비밀번호</div>
+                    </div>
+                    <input type="password" id="login_password" class="form-control rounded-0"  placeholder="비밀번호를 입력해 주세요">
                     <button type="button" id="login_password_eye">비밀번호 보기</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#signupModal" onclick="hide_nickname()">회원가입</button>
-                <button type="button" class="btn btn-secondary" onclick="login()">확인</button>
+                <div class="modal-footer">
+                    <button class="btn w-100 text-white rounded-0 py-2" onclick="login()" type="submit">확인</button>
+                    <button class="btn1 w-100 text-white rounded-0 py-2" type="button" data-dismiss="modal" aria-label="Close" data-toggle="modal" data-target="#signupModal" onclick="hide_nickname()">회원가입</button>
+                </div>
+
             </div>
         </div>
     </div>
 </div>
-<
+
 
 <!-- sign up Modal -->
 <div class="modal fade" id="signupModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
      aria-labelledby="logInModalLabel"
      aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="signupModalLabel">회원가입</h5>
-                <button id="signup_close" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">x</span>
-                </button>
+        <div class="modal-content p-sm-4 p-3 position-relative">
+            <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close" >
+                <i class="fas fa-times-circle fa-lg"></i>
+            </button>
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-center w-100">회원가입</h5>
             </div>
             <div class="modal-body">
-                <div class="input-box">
-                    <label>닉네임</label>
-                    <input type="text" id="nickname">
-                    <p id="help-id" class="help is-hidden"></p>
-                    <p id="help-id-login" class="help is-danger"></p>
-                    <p id="can-using">사용해도 되는 닉네임 입니다.</p>
-                    <p id="cant-using">이미 사용중인 닉네임 입니다.</p>
+
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text rounded-0 border-0">닉네임</div>
+                    </div>
+                    <input type="text" id="nickname" class="form-control rounded-0"  placeholder="닉네임을 입력해 주세요">
                     <button type="button" onclick="nickname_check()">중복확인</button>
                 </div>
-                <div class="input-box">
-                    <label>비밀번호</label>
-                    <input type="password" id="signup_password">
-                    <p id="help-password" class="help is-hidden"></p>
+                <p id="help-id" class="help is-hidden"></p>
+                <p id="help-id-login" class="help is-danger"></p>
+                <p id="can-using">사용해도 되는 닉네임 입니다.</p>
+                <p id="cant-using">이미 사용중인 닉네임 입니다.</p>
+
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text rounded-0 border-0">비밀번호</div>
+                    </div>
+                    <input type="password" id="signup_password" class="form-control rounded-0" placeholder="비빌번호를 입력해 주세요">
+
                     <button type="button" id="signup_password_eye">비밀번호 보기</button>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal" onclick="sign_up()">가입완료</button>
+                <p id="help-password" class="help is-hidden"></p>
+                <button class="btn w-100 text-white rounded-0 py-2" type="submit" onclick="sign_up()">가입완료</button>
+
             </div>
         </div>
     </div>
 </div>
 
 </body>
+
 </html>
