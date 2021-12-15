@@ -286,7 +286,7 @@ function changedone(id) {
     let taskId = {id:id}
     $.ajax({
         type: "PUT",
-        url: `https://api.bbichul.site/api/teams/task`,
+        url: `https://api.bbichul.site/api/teams/tasks/status`,
         contentType: "application/json",
         data: JSON.stringify(taskId),
         success: function () {
