@@ -203,18 +203,49 @@ function showtask() {
 function makeListTask(task, done, id) {
     //할 일이 아직 완료 상태가 아니면
     if (done == false) {
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".notdone").append(tempHtml);
     } else { //할 일이 완료 상태면
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".done").append(tempHtml);
     }
 }
 
+// to do list task 수정
+function update_input(id, task) {
+    value = id
+    $(".txt").val(task);
+    $('#taskinput').change(function () {
+        if ($(".txt").val() != "" && value != -1) {
+            let new_task = $(".txt").val();
+            update_task(id, new_task)
+        } else {
+            deletetask(id)
+        }
+        //입력 창 비우기
+        $(".txt").val("");
+    })
+}
+
+function update_task(id, new_task) {
+    let json = {id:id, task:new_task}
+    $.ajax({
+        type: "PUT",
+        url: `https://api.bbichul.site/api/teams/task`,
+        contentType: "application/json",
+        data: JSON.stringify(json),
+        success: function () {
+            window.location.reload()
+        }
+    })
+}
+
+let value = -1
+
 // 내가 속한 팀 찾아 할일 저장하기
-$(document).ready(function () {
+$(function () {
     $('#taskinput').keydown(function (key) {
-        if (key.keyCode == 13) {
+        if (key.keyCode == 13 && $(".txt").val() != "" && value == -1) {
             let task = $(".txt").val();
             let teamtask = {task : task}
             $.ajax({
@@ -225,7 +256,7 @@ $(document).ready(function () {
                 success: function (response) {
                     let task = response['task']
                     let id = response['id']
-                    let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i></div>`
+                    let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i><i class='bi bi-pencil-fill' onclick="update_input('${id}', '${task}')"></i></div>`
                     $(".notdone").append(temphtml);
                 }
             });
@@ -271,7 +302,6 @@ function checkstatus() {
         type: "GET",
         url: "https://api.bbichul.site/api/teams/status",
         success: function (response) {
-            console.log(response)
             for (let i = 0; i < response.length; i++) {
                 let nick_name = response[i]['username']
                 if (response[i]['studying'] == false) {
