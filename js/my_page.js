@@ -275,7 +275,7 @@ $(".password_eye").on("mousedown", function(){
 //회원 탈퇴 기능
 function withdrawal() {
 
-    let start = {"status": false}  
+    let start = {"status": false}
 
     $.ajax({
         type: "POST",
