@@ -203,10 +203,10 @@ function show_task() {
 function make_list(task, done, id) {
     //할 일이 아직 완료 상태가 아니면
     if (done == false) {
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-pencil-fill' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".notdone").append(tempHtml);
     } else { //할 일이 완료 상태면
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-pencil-fill' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".done").append(tempHtml);
     }
 }
