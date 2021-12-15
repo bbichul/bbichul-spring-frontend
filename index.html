@@ -277,6 +277,38 @@
         </div>
     </div>
 </div>
+    <!--recover Modal -->
+<div class="modal fade" id="recoverModal" data-backdrop="static" data-keyboard="false" tabindex="-1" role="dialog"
+     aria-labelledby="logInModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content p-sm-4 p-3 position-relative">
+            <button type="button" class="close position-absolute" data-dismiss="modal" aria-label="Close">
+                <i class="fas fa-times-circle fa-lg"></i>
+            </button>
+            <div class="modal-header border-0">
+                <h5 class="modal-title text-center w-100">계정복구</h5>
+            </div>
+            <div class="modal-body">
+
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+                        <div class="input-group-text rounded-0 border-0">닉네임</div>
+                    </div>
+                    <input type="text" id="recover_nickname" class="form-control rounded-0" placeholder="닉네임을 입력해 주세요">
+                </div>
+                <div class="input-group mb-4">
+                    <div class="input-group-prepend">
+
+                    </div></div>
+                <div class="modal-footer">
+                    <button class="btn w-100 text-white rounded-0 py-2" onclick="recover()" type="submit">확인</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- sign up Modal -->
