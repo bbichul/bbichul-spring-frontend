@@ -191,7 +191,7 @@ function recover() {
                 location.href ="index.html";
             }
 
-        })
+        })  
 
     }
 }
