@@ -10,7 +10,8 @@ $(document).ready(function () {
     get_goal_modal()
     get_resolution_modal()
     get_nickname_modal()
-    get_user_team()
+    // get_user_team()
+    get_total_time()
 });
 
 //select-box에서 월이 바뀌면 날짜에 맞는 그래프를 다시불러옴
@@ -62,6 +63,22 @@ function post_goal_modal() {
     }else{
         alert('시작일 종료일 설정을 다시 해주세요')
 }}
+
+function get_total_time() {
+    $.ajax({
+        type: "GET",
+        url: "https://api.bbichul.site/api/users/time",
+        contentType: "application/json",
+        data: {
+        },
+        success: function (response) {
+            let total_hour = response["totalHour"]
+            console.log('elfjelfjef')
+            $('.total-study-time').css('display', `inline-block`);
+            $('.total-study-time').text(`(총 공부시간 : ${total_hour}시간)`)
+        }
+    })
+}
 
 function get_goal_modal() {
     $.ajax({
