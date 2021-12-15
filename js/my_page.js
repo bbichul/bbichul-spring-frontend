@@ -81,8 +81,6 @@ function get_total_time() {
         },
         success: function (response) {
             let total_hour = response["totalHour"]
-            console.log('elfjelfjef')
-            $('.total-study-time').css('display', `inline-block`);
             $('.total-study-time').text(`(총 공부시간 : ${total_hour}시간)`)
         }
     })
