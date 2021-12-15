@@ -167,6 +167,34 @@ function nickname_check() {
         }
     });
 }
+// 계정복구
+function recover() {
+    if (!confirm("계정을 복구 하시겠습니까?")) {
+        alert("계정 복구에 실패하였습니다");
+        location.href ="index.html";
+    } else {
+        let name = {
+            username: $('#recover_nickname').val(),
+            status : true
+        }
+        $.ajax({
+            type: 'POST',
+            url: `https://api.bbichul.site/api/users/recover`,
+            contentType: "application/json",
+            data: JSON.stringify(name),
+            success: function (response) {
+                alert("계정 복구가 완료되었습니다");
+                location.href ="index.html";
+            },
+            error: function (response){
+                alert("계정 탈퇴가 확인되지 않은 아이디 입니다")
+                location.href ="index.html";
+            }
+
+        })
+
+    }
+}
 
 //유저이름 가져오기
 let user = sessionStorage.getItem("username")
