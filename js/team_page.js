@@ -15,7 +15,7 @@ $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
 
 
 $(document).ready(function () {
-    teamCheck();
+    team_check();
     document.getElementById('team-name').readOnly = false;
     $("input[name=checked-team]").val('')
     /*    pieChartDraw();*/
@@ -53,7 +53,7 @@ function get_progressbar() {
 }
 
 // 팀 소속 여부 확인
-function teamCheck() {
+function team_check() {
     $.ajax({
         type: "GET",
         url: `https://api.bbichul.site/api/teams`,
@@ -68,8 +68,8 @@ function teamCheck() {
                 $('#team').css('color', `whitesmoke`);
                 $('#team').css('font-size', `40px`);
                 $('#team').append(team)
-                checkstatus();
-                showtask()
+                check_status();
+                show_task()
             }
         }
     })
@@ -82,7 +82,7 @@ function hide_teamname() {
 }
 
 // 팀 만들기 기능
-function createTeam() {
+function create_team() {
     team = $('#team-name').val()
     let teamname = {teamname : team}
     // hidden input의 value로 중복확인 버튼을 눌렀는지 안눌렀는지 확인
@@ -104,8 +104,8 @@ function createTeam() {
                     $('.team-exist').show()
                     let team = response
                     $('#team').append(team)
-                    checkstatus();
-                    showtask();
+                    check_status();
+                    show_task();
                 }
             }
         })
@@ -134,8 +134,8 @@ function invite_team() {
                     $('.team-exist').show()
                     let team = `${invitename}`
                     $('#team').append(team)
-                    checkstatus();
-                    showtask()
+                    check_status();
+                    show_task()
                 } else if (response == '존재하지 않는 팀입니다. 팀 이름을 확인해주세요.') {
                     alert(response);
                 }
@@ -183,7 +183,7 @@ $('#create-team-close').on('click',function() {
 });
 
 /*to do list*/
-function showtask() {
+function show_task() {
     $.ajax({
         type: "GET",
         url: "https://api.bbichul.site/api/teams/task",
@@ -193,20 +193,20 @@ function showtask() {
                 let task = response[i]['task']
                 let done = response[i]['done']
                 let id = response[i]['id']
-                makeListTask(task, done, id);
+                make_list(task, done, id);
             }
         }
     })
 }
 
 // 할일 화면에 띄우기
-function makeListTask(task, done, id) {
+function make_list(task, done, id) {
     //할 일이 아직 완료 상태가 아니면
     if (done == false) {
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".notdone").append(tempHtml);
     } else { //할 일이 완료 상태면
-        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
+        let tempHtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"><i class='bi bi-check-lg' onclick="change_done('${id}')"></i></i><i class='bi bi-check-lg' onclick="update_input('${id}','${task}')"></i></div>`;
         $(".done").append(tempHtml);
     }
 }
@@ -220,7 +220,7 @@ function update_input(id, task) {
             let new_task = $(".txt").val();
             update_task(id, new_task)
         } else {
-            deletetask(id)
+            delete_task(id)
         }
         //입력 창 비우기
         $(".txt").val("");
@@ -256,7 +256,7 @@ $(function () {
                 success: function (response) {
                     let task = response['task']
                     let id = response['id']
-                    let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="deletetask('${id}')"></i><i class='bi bi-check-lg' onclick="changedone('${id}')"></i><i class='bi bi-pencil-fill' onclick="update_input('${id}', '${task}')"></i></div>`
+                    let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"></i><i class='bi bi-check-lg' onclick="change_done('${id}')"></i><i class='bi bi-pencil-fill' onclick="update_input('${id}', '${task}')"></i></div>`
                     $(".notdone").append(temphtml);
                 }
             });
@@ -268,7 +268,7 @@ $(function () {
 
 
 // to do list 삭제 버튼
-function deletetask(id) {
+function delete_task(id) {
     let taskId = {id:id}
     $.ajax({
         type: "DELETE",
@@ -282,7 +282,7 @@ function deletetask(id) {
 }
 
 // 할 일을 완료했는지 안 했는지 상태 변경 및 저장
-function changedone(id) {
+function change_done(id) {
     let taskId = {id:id}
     $.ajax({
         type: "PUT",
@@ -296,7 +296,7 @@ function changedone(id) {
 }
 
 //팀원들의 출결 상태 불러오기
-function checkstatus() {
+function check_status() {
     let status = "check-in"
     $.ajax({
         type: "GET",
