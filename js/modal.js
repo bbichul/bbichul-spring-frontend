@@ -167,7 +167,7 @@ function nickname_check() {
         }
     });
 }
-// 계정복구
+// 계정복구 기능
 function recover() {
     if (!confirm("계정을 복구 하시겠습니까?")) {
         alert("계정 복구에 실패하였습니다");
