@@ -120,7 +120,7 @@ function getInfo() {
             let calendar_id;
             let calendar_name;
             for (let i = 0; i < response.length; i++) {
-                if (response[i].team != null) {
+                if (!response[i].isPrivate) {
                     calendar_id = response[i].id;
                     calendar_name = response[i].calendarName;
                     let temp_html = `<li>
