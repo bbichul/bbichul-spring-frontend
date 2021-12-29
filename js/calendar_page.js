@@ -14,6 +14,7 @@ let nick_name;
 let team_name;
 let selected_calendar_id;
 let rCheck;
+let memo_version
 
 $(document).ready(function () {
     getInfo()
@@ -115,7 +116,6 @@ function getInfo() {
         async: false, //전역변수에 값을 저장하기 위해 동기 방식으로 전환,
         data: {},
         success: function (response) {
-            console.log(response)
             checkingOnce(response[0].id)
             let calendar_id;
             let calendar_name;
@@ -167,7 +167,8 @@ function updateText() {
     let doc = {
         "calendarId" : selected_calendar_id,
         "contents" : varMemoText,
-        "dateData" : btn_year_month_day
+        "dateData" : btn_year_month_day,
+        "memoVersion" : memo_version
     }
 
     $.ajax({
@@ -179,7 +180,7 @@ function updateText() {
         contentType: "application/json",
         data: JSON.stringify(doc),
         success: function (response) {
-            console.log(1)
+            memo_version = null;
         }
     })
     location.reload();
@@ -197,8 +198,8 @@ function clickedDayGetMemo(obj) {
         url: `https://api.bbichul.site/api/calendars/calendar/memo?id=${selected_calendar_id}&date=${btn_year_month_day}`,
         // data: {date_give: btn_year_month_day, select_cal_give: selected_cal_now},
         success: function (response) {
-            let receive_memo = response.contents;
-            $('#calenderNote').text(receive_memo);
+            memo_version = response.memoVersion;
+            $('#calenderNote').text(response.contents);
         }
     })
 }
@@ -337,7 +338,6 @@ function getMemo() {
         url: `https://api.bbichul.site/api/calendars/calendar?id=${selected_calendar_id}`,
         // data: {calendarType: selected_cal_now},
         success: function (response) {
-            console.log(response)
             for (let i = 0; i < response.length; i++) {
                 let text_id = response[i].dateData + "text";
                 let load_text = response[i].contents.substr(0, 5);
@@ -360,7 +360,6 @@ $("#calenderNote").on("propertychange change keyup paste input", function () {
     if (currentVal == oldVal) {
         return;
     }
-    console.log(btn_year_month_day)
     oldVal = currentVal;
     if( oldVal.length > 4){
      $('#' + btn_year_month_day + "text").text(oldVal.substr(0, 5) + '・・・');
