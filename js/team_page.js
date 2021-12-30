@@ -246,6 +246,7 @@ function update_task(id, new_task) {
     })
 }
 
+// to do list input창의 내용이 새로운 task인지 기존의 task를 수정하는것인지 판별하는 변수
 let value = -1
 
 // 내가 속한 팀 찾아 할일 저장하기
