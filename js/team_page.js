@@ -6,6 +6,8 @@ window.onpageshow = function (event) {
     }
 }
 
+let TEAM = {};
+
 // ajax 시 헤더 부분에 토큰 넣어주고 코드를 줄일 수 있다
 $.ajaxPrefilter(function( options, originalOptions, jqXHR ) {
     if(localStorage.getItem('token')) {
@@ -35,8 +37,8 @@ $(document).ready(function () {
 //progress bar
 function get_progressbar() {
     $.ajax({
-        type: "POST",
-        url: "https://api.bbichul.site/api/teams/task/graph",
+        type: "GET",
+        url: `https://api.bbichul.site/api/teams/task/graph?teamid=${TEAM.id}`,
         success: function (response) {
             let percent = response['percent']
             let done_count = response['doneCount']
@@ -58,18 +60,19 @@ function team_check() {
         type: "GET",
         url: `https://api.bbichul.site/api/teams`,
         success: function (response) {
-            if (response == "아직 소속된 팀이 없습니다.") {
-                $('.team-exist').hide()
-                let temp_html = `<h1>아직 소속된 팀이 없습니다.</h1>`
-                $('#team-alert').append(temp_html)
+            if (response == false) {
+                $('.team-exist').hide();
+                let temp_html = `<h1>아직 소속된 팀이 없습니다.</h1>`;
+                $('#team-alert').append(temp_html);
             } else {
-                $('.not-exist').hide()
-                let team = `${response}`
+                $('.not-exist').hide();
+                TEAM.name = response['teamname'];
+                TEAM.id = response['id'];
                 $('#team').css('color', `whitesmoke`);
                 $('#team').css('font-size', `40px`);
-                $('#team').append(team)
+                $('#team').append(TEAM.name)
                 check_status();
-                show_task()
+                show_task();
             }
         }
     })
@@ -84,7 +87,7 @@ function hide_teamname() {
 // 팀 만들기 기능
 function create_team() {
     team = $('#team-name').val()
-    let teamname = {teamname : team}
+    let get_teamname = {teamname : team}
     // hidden input의 value로 중복확인 버튼을 눌렀는지 안눌렀는지 확인
     if ($("input[name=checked-team]").val() != 'y') {
         alert("중복확인을 통과한 경우만 만들 수 있습니다.")
@@ -93,20 +96,22 @@ function create_team() {
             type: "POST",
             url: "https://api.bbichul.site/api/teams",
             contentType: "application/json",
-            data: JSON.stringify(teamname),
+            data: JSON.stringify(get_teamname),
             success: function (response) {
-                if (response == '중복된 팀명이 존재합니다.') {
-                    alert(response);
-                } else {
-                    alert("팀 만들기 성공!");
-                    $('#create-team-close').click()
-                    $('.not-exist').hide()
-                    $('.team-exist').show()
-                    let team = response
-                    $('#team').append(team)
-                    check_status();
-                    show_task();
-                }
+                alert("팀 만들기 성공!");
+                $('#create-team-close').click()
+                $('.not-exist').hide()
+                $('.team-exist').show()
+                TEAM.name = response['teamname'];
+                TEAM.id = response['id'];
+                $('#team').css('color', `whitesmoke`);
+                $('#team').css('font-size', `40px`);
+                $('#team').append(TEAM.name)
+                check_status();
+                show_task();
+            },
+            error: function () {
+                alert("중복된 팀명이 존재합니다.")
             }
         })
     }
@@ -116,7 +121,7 @@ function create_team() {
 function invite_team() {
     let str_space = /\s/;
     let invitename = $('#invite-name').val()
-    let teamname = {teamname:invitename}
+    let get_teamname = {teamname:invitename}
     if (!invitename || str_space.exec(invitename)) {
         alert("팀 이름에 공백을 사용할 수 없습니다.")
         $("#invite-name").val(null);
@@ -125,20 +130,22 @@ function invite_team() {
             type: "POST",
             url: "https://api.bbichul.site/api/teams/signup",
             contentType: "application/json",
-            data: JSON.stringify(teamname),
+            data: JSON.stringify(get_teamname),
             success: function (response) {
-                if (response == '초대받은 팀에 가입되었습니다.') {
-                    alert(response);
-                    $('#create-team-close').click()
-                    $('.not-exist').hide()
-                    $('.team-exist').show()
-                    let team = `${invitename}`
-                    $('#team').append(team)
-                    check_status();
-                    show_task()
-                } else if (response == '존재하지 않는 팀입니다. 팀 이름을 확인해주세요.') {
-                    alert(response);
-                }
+                alert('초대받은 팀에 가입되었습니다.');
+                $('#create-team-close').click()
+                $('.not-exist').hide()
+                $('.team-exist').show()
+                TEAM.name = response['teamname'];
+                TEAM.id = response['id'];
+                $('#team').css('color', `whitesmoke`);
+                $('#team').css('font-size', `40px`);
+                $('#team').append(TEAM.name)
+                check_status();
+                show_task()
+            },
+            error: function () {
+                alert('존재하지 않는 팀입니다. 팀 이름을 확인해주세요.')
             }
         })
     }
@@ -158,19 +165,18 @@ function teamname_check() {
             url: "https://api.bbichul.site/api/teams/checkname",
             contentType: "application/json",
             data: JSON.stringify(name),
-            success: function (response) {
-                if (response == "사용할 수 있는 팀 이름입니다.") {
-                    $("#double-check").hide()
-                    $("#cant-using").hide()
-                    $("#can-using").show()
-                    $("input[name=checked-team]").val('y');
-                    document.getElementById('team-name').readOnly = true;
-                } else {
-                    $("#double-check").hide()
-                    $("#can-using").hide()
-                    $("#cant-using").show()
-                    $("input[name=checked-team]").val(null);
-                }
+            success: function () {
+                $("#double-check").hide()
+                $("#cant-using").hide()
+                $("#can-using").show()
+                $("input[name=checked-team]").val('y');
+                document.getElementById('team-name').readOnly = true;
+            },
+            error: function () {
+                $("#double-check").hide()
+                $("#can-using").hide()
+                $("#cant-using").show()
+                $("input[name=checked-team]").val(null);
             }
         });
     }
@@ -186,7 +192,7 @@ $('#create-team-close').on('click',function() {
 function show_task() {
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/api/teams/task",
+        url: `https://api.bbichul.site/api/teams/task?teamid=${TEAM.id}`,
         success: function (response) {
             get_progressbar()
             for (let i = 0; i < response.length; i++) {
@@ -247,17 +253,18 @@ $(function () {
     $('#taskinput').keydown(function (key) {
         if (key.keyCode == 13 && $(".txt").val() != "" && value == -1) {
             let task = $(".txt").val();
-            let teamtask = {task : task}
+            let team_task = {teamid : TEAM.id, task : task}
             $.ajax({
                 type: "POST",
                 url: "https://api.bbichul.site/api/teams/task",
                 contentType: "application/json",
-                data: JSON.stringify(teamtask),
+                data: JSON.stringify(team_task),
                 success: function (response) {
                     let task = response['task']
                     let id = response['id']
                     let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"></i><i class='bi bi-check-lg' onclick="change_done('${id}')"></i><i class='bi bi-pencil-fill' onclick="update_input('${id}', '${task}')"></i></div>`
                     $(".notdone").append(temphtml);
+                    get_progressbar()
                 }
             });
             //입력 창 비우기
@@ -269,12 +276,12 @@ $(function () {
 
 // to do list 삭제 버튼
 function delete_task(id) {
-    let taskId = {id:id}
+    let task_id = {id:id}
     $.ajax({
         type: "DELETE",
         url: `https://api.bbichul.site/api/teams/task`,
         contentType: "application/json",
-        data: JSON.stringify(taskId),
+        data: JSON.stringify(task_id),
         success: function () {
             window.location.reload();
         }
@@ -283,12 +290,12 @@ function delete_task(id) {
 
 // 할 일을 완료했는지 안 했는지 상태 변경 및 저장
 function change_done(id) {
-    let taskId = {id:id}
+    let task_id = {id:id}
     $.ajax({
         type: "PUT",
         url: `https://api.bbichul.site/api/teams/tasks/status`,
         contentType: "application/json",
-        data: JSON.stringify(taskId),
+        data: JSON.stringify(task_id),
         success: function () {
             window.location.reload();
         }
@@ -300,7 +307,7 @@ function check_status() {
     let status = "check-in"
     $.ajax({
         type: "GET",
-        url: "https://api.bbichul.site/api/teams/status",
+        url: `https://api.bbichul.site/api/teams/status?teamid=${TEAM.id}`,
         success: function (response) {
             for (let i = 0; i < response.length; i++) {
                 let nick_name = response[i]['username']
