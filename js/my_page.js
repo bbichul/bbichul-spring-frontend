@@ -196,9 +196,10 @@ function get_user_team() {
         data: {},
         success: function (response) {
             let user_team = response['userTeam']
-            if (response['msg'] == 'team_exist') {
+            console.log(response["userTeam"])
+            if (user_team != "") {
                 $(".team-list").append(`${user_team}`)
-            } else if (response['msg'] == 'no_team') {
+            } else {
                 $(".team-list").append(`아직 팀이 없습니다.`)
             }
         }
