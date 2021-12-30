@@ -18,7 +18,7 @@ $(document).ready(function () {
     get_goal_modal()
     get_resolution_modal()
     get_nickname_modal()
-    // get_user_team()
+    get_user_team()
     get_total_time()
 });
 
@@ -188,26 +188,22 @@ function get_nickname_modal() {
 
 // 팀 소속 확인 기능
 
-// function get_user_team() {
-//     $.ajax({
-//         type: "GET",
-//         url: "https://api.bbichul.site/api/user-team",
-//         headers: {
-//             Authorization:  getCookie('access_token')
-//         },
-//         data: {
-//         },
-//         success: function (response) {
-//             let user_team = response['user_team']
-//             if (response['msg'] == 'team_exist') {
-//                 $(".team-list").append(`${user_team}`)
-//                 console.log(user_team)
-//             } else if (response['msg'] == 'no_team') {
-//                 $(".team-list").append(`아직 팀이 없습니다.`)
-//             }
-//         }
-//     })
-// }
+function get_user_team() {
+    $.ajax({
+        type: "GET",
+        url: "https://api.bbichul.site/api/users/team",
+        contentType: "application/json",
+        data: {},
+        success: function (response) {
+            let user_team = response['userTeam']
+            if (response['msg'] == 'team_exist') {
+                $(".team-list").append(`${user_team}`)
+            } else if (response['msg'] == 'no_team') {
+                $(".team-list").append(`아직 팀이 없습니다.`)
+            }
+        }
+    })
+}
 
 
 // 비밀번호 숨기기/보기 기능
