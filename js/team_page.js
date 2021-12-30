@@ -265,7 +265,7 @@ $(function () {
                     let id = response['id']
                     let temphtml = `<div class='task'>${task}<i class='bi bi-trash-fill' onclick="delete_task('${id}')"></i><i class='bi bi-check-lg' onclick="change_done('${id}')"></i><i class='bi bi-pencil-fill' onclick="update_input('${id}', '${task}')"></i></div>`
                     $(".notdone").append(temphtml);
-                    get_progressbar()
+                    window.location.reload()
                 }
             });
             //입력 창 비우기
