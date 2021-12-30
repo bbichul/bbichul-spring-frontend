@@ -253,7 +253,7 @@ $(function () {
     $('#taskinput').keydown(function (key) {
         if (key.keyCode == 13 && $(".txt").val() != "" && value == -1) {
             let task = $(".txt").val();
-            let team_task = {teamid : TEAM.id, task : task}
+            let team_task = {teamId : TEAM.id, task : task}
             $.ajax({
                 type: "POST",
                 url: "https://api.bbichul.site/api/teams/task",
