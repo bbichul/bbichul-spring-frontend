@@ -195,8 +195,8 @@ function get_user_team() {
         contentType: "application/json",
         data: {},
         success: function (response) {
-            let user_team = response['userTeam']
-            console.log(response["userTeam"])
+            let user_team = response['myTeam']
+            console.log(response["myTeam"])
             if (user_team != "") {
                 $(".team-list").append(`${user_team}`)
             } else {
