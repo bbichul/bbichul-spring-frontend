@@ -242,7 +242,7 @@ function update_task(id, new_task) {
 
 let value = -1
 
-// 내가 속한 팀 찾아 할일 저장하기
+// 내가 속한 팀 찾아 할일 저장하
 $(function () {
     $('#taskinput').keydown(function (key) {
         if (key.keyCode == 13 && $(".txt").val() != "" && value == -1) {
