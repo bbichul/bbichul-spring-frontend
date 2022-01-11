@@ -332,7 +332,7 @@ $(document).ready(function(){
 
 // 시간 그래프
 function post_study_time_graph() {
-        let year = $("select[name=year]").val()
+    let year = $("select[name=year]").val()
     let month = $("select[name=month]").val()
 
     $.ajax({
